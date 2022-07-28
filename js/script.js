@@ -1,64 +1,60 @@
 
+//let productos = "";
+const productos = [];
 
-let productos = "";
-
-
-function traerDatos() {
+function traerDatosPosta() {
     fetch('productos.json')
-    .then(function(response){
-        return response.json()
-    })
-    .then(function(data){
-        let cards = '';
-        data.forEach(function(producto){
-            cards += `<div class="col-md-4 mb-3 cards__cardKit">
+        .then(function (response) {
+            return response.json()
+        }).then(data => {
+            for (const producto of data) {
+                productos.push(producto)
+            }
+            pintarDatos();
+        });
+}
+
+traerDatosPosta();
+
+function pintarDatos() {
+    let cards = '';
+    productos.forEach(function (producto) {
+        cards += `<div class="col-md-4 mb-3 cards__cardKit">
             <div class="card producto">
                 <img src="${producto.foto}" class="card-img-top" alt="pascuas">
                 <div class="card-body">
                 <h5 class="card-title cards__cardTitle">${producto.nombre}</h5>
                 <p class="card-text cards__cardText">$${producto.precio}</p>
-                <a href="#" onclick="agregarAlCarrito(${producto.id})" class="btn cards__botonCartas" onclick="agregarAlCarrito()" >Agregar al carrito</a>
+                <a href="#" onclick="agregarAlCarrito(${producto.id})" class="btn cards__botonCartas agregar_carrito" >Agregar al carrito</a>
                 </div>
                 </div>
             </div>`
-        });
-        document.getElementById('card-container').innerHTML = cards;
-        })
-    }
+    });
+    document.getElementById('card-container').innerHTML = cards;
+}
 
+const carrito = JSON.parse(localStorage.getItem("totalCarrito")) || [];
+const carritoStorage = localStorage.getItem('cart');
+const cartParse = JSON.parse(carritoStorage) ?? [];
 
-
-
-    
-    const carrito = JSON.parse(localStorage.getItem("totalCarrito")) || [];
-
-    const carritoStorage = localStorage.getItem('cart');
-    const cartParse = JSON.parse(carritoStorage) ?? [];
-
-
-    function agregarAlCarrito(id) {
-        fetch('productos.json')
-        .then(function(response){
-            return response.json()
-        })
-        .then(function(data){
-            let productos = data.results;
-            let resultado = productos.find((producto) => producto.id == id);
-            carrito.push(resultado);
-            const totalCarrito = carrito.reduce((cards, producto) => cards + producto.precio, 0);
-            const cartJSON = JSON.stringify(totalCarrito);
-            localStorage.setItem('cart', cartJSON);
-            document.getElementById("total").innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+function agregarAlCarrito(id) {
+    let resultado = productos.find((producto) => producto.id == id);
+    carrito.push(resultado);
+    console.log(carrito);
+    const totalCarrito = carrito.reduce((cards, producto) => cards + producto.precio, 0);
+    const cartJSON = JSON.stringify(totalCarrito);
+    localStorage.setItem('cart', cartJSON);
+    document.getElementById("total").innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
             <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
             </svg>`+ " $" + totalCarrito;
 
 
 
-        })
-    }
 
-traerDatos();
-agregarAlCarrito();
+}
+
+pintarDatos();
+//agregarAlCarrito();
 
 
 
@@ -111,7 +107,7 @@ cerrarPop.addEventListener('click', () => {
 
 
 
-   
+
 
 /*
 

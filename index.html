@@ -115,7 +115,18 @@
 <div class="container-fluid col-md-8">
    <div id="card-container" class="row">
 
-            
+    <template id="template-cards">
+      <div class="col-md-4 mb-3 cards__cardKit">
+        <div class="card producto">
+          <img src="${producto.foto}" class="card-img-top" alt="pascuas">
+          <div class="card-body">
+          <h5 class="card-title cards__cardTitle">${producto.nombre}</h5>
+          <p class="card-text cards__cardText">$ <span>{{producto.precio}}</span></p>
+          <button class="btn cards__botonCartas" @click="comprar(producto)">Agregar al carrito</button>
+          </div>
+        </div>
+      </div>
+  </template>
 
 
     </div>
